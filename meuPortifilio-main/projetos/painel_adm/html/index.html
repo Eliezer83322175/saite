@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel ADM - vRP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="admin-panel">
+    <!-- Glassmorphism Background -->
+    <div class="glass-bg"></div>
+    
+    <!-- Main Panel -->
+    <div class="main-panel">
+      <!-- Header -->
+      <div class="header">
+        <div class="header-left">
+          <div class="header-title">
+            <div class="title-icon">
+              <i class="fas fa-crown"></i>
+            </div>
+            <div class="title-text">
+              <h1>Painel Administrativo</h1>
+              <span class="subtitle">Sistema de gerenciamento vRP</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="header-center">
+          <div class="nav-tabs">
+            <button class="nav-tab" id="btn-vehicles" data-tab="vehicles">
+              <i class="fas fa-car"></i>
+              <span>Veículos</span>
+            </button>
+            <button class="nav-tab active" id="btn-items" data-tab="items">
+              <i class="fas fa-box-open"></i>
+              <span>Itens</span>
+            </button>
+            <button class="nav-tab" id="btn-locations" data-tab="locations">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>Locais</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <div class="header-stats">
+            <div class="stat-item">
+              <i class="fas fa-users"></i>
+              <span>24 Online</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-server"></i>
+              <span>98% CPU</span>
+            </div>
+          </div>
+          <button class="theme-toggle" id="theme-toggle" title="Alternar tema">
+            <i class="fas fa-moon"></i>
+          </button>
+          <button class="close-btn" onclick="fecharPainel()" title="Fechar painel">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Content -->
+      <div class="content">
+        <!-- Vehicles Tab -->
+        <div class="tab-content hidden" id="vehicles-content">
+          <div class="content-header">
+            <div class="page-title">
+              <div class="page-icon">
+                <i class="fas fa-car"></i>
+              </div>
+              <div class="page-info">
+                <h2>Spawnar Veículos</h2>
+                <p>Gerencie e spawne veículos no servidor</p>
+              </div>
+            </div>
+            <div class="header-actions">
+              <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="vehicle-search" placeholder="Pesquisar veículo...">
+              </div>
+            </div>
+          </div>
+          
+          <div class="vehicles-grid" id="vehicle-list"></div>
+        </div>
+        
+        <!-- Items Tab -->
+        <div class="tab-content" id="items-content">
+          <div class="grid-layout">
+            <!-- Player Selection Card -->
+            <div class="modern-card player-card">
+              <div class="card-header">
+                <div class="header-content">
+                  <div class="header-icon">
+                    <i class="fas fa-user-search"></i>
+                  </div>
+                  <div class="header-text">
+                    <h3>Selecionar Jogador</h3>
+                    <p>Busque por ID ou nome do jogador</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="card-body">
+                <div class="search-section">
+                  <div class="input-group modern">
+                    <label for="player-id">Jogador</label>
+                    <div class="input-container">
+                      <div class="input-wrapper">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="player-id" placeholder="Digite o ID ou nome">
+                      </div>
+                      <button id="search-player" class="modern-btn primary">
+                        <i class="fas fa-search"></i>
+                        <span>Buscar</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="player-info hidden" id="player-info">
+                  <div class="player-profile">
+                    <div class="avatar-section">
+                      <div class="avatar-container">
+                        <div class="avatar-placeholder">
+                          <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="status-indicator" id="player-status-indicator"></div>
+                        <div class="avatar-ring"></div>
+                      </div>
+                    </div>
+                    
+                    <div class="profile-info">
+                      <div class="profile-header">
+                        <h3 id="player-name">Nome do Jogador</h3>
+                        <span class="status-badge" id="player-status">Offline</span>
+                      </div>
+                      
+                      <div class="profile-stats">
+                        <div class="stat-grid">
+                          <div class="stat-item">
+                            <div class="stat-icon">
+                              <i class="fas fa-id-card"></i>
+                            </div>
+                            <div class="stat-content">
+                              <span class="stat-label">ID</span>
+                              <span class="stat-value" id="player-id-display">0</span>
+                            </div>
+                          </div>
+                          
+                          <div class="stat-item">
+                            <div class="stat-icon">
+                              <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-content">
+                              <span class="stat-label">Grupo</span>
+                              <span class="stat-value" id="player-group">N/A</span>
+                            </div>
+                          </div>
+                          
+                          <div class="stat-item">
+                            <div class="stat-icon">
+                              <i class="fas fa-briefcase"></i>
+                            </div>
+                            <div class="stat-content">
+                              <span class="stat-label">Trabalho</span>
+                              <span class="stat-value" id="player-job">N/A</span>
+                            </div>
+                          </div>
+                          
+                          <div class="stat-item">
+                            <div class="stat-icon">
+                              <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <div class="stat-content">
+                              <span class="stat-label">Banco</span>
+                              <span class="stat-value" id="player-bank">$0</span>
+                            </div>
+                          </div>
+                          
+                          <div class="stat-item">
+                            <div class="stat-icon">
+                              <i class="fas fa-star"></i>
+                            </div>
+                            <div class="stat-content">
+                              <span class="stat-label">Level</span>
+                              <span class="stat-value" id="player-level">1</span>
+                            </div>
+                          </div>
+                          
+                          <div class="stat-item">
+                            <div class="stat-icon">
+                              <i class="fas fa-boxes"></i>
+                            </div>
+                            <div class="stat-content">
+                              <span class="stat-label">Inventário</span>
+                              <span class="stat-value" id="player-inventory">0 itens</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Items Management Card -->
+            <div class="modern-card items-card">
+              <div class="card-header">
+                <div class="header-content">
+                  <div class="header-icon">
+                    <i class="fas fa-cube"></i>
+                  </div>
+                  <div class="header-text">
+                    <h3>Gerenciar Itens</h3>
+                    <p>Selecione e distribua itens</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="card-body">
+                <div class="search-section">
+                  <div class="input-group modern">
+                    <label for="item-search">Pesquisar Item</label>
+                    <div class="input-wrapper">
+                      <i class="fas fa-search"></i>
+                      <input type="text" id="item-search" placeholder="Ex: money, celular, radio...">
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="items-container">
+                  <div class="items-grid" id="item-list"></div>
+                </div>
+                
+                <div class="action-section">
+                  <div class="quantity-control">
+                    <label>Quantidade</label>
+                    <div class="quantity-input">
+                      <button class="quantity-btn" id="decrease-amount">
+                        <i class="fas fa-minus"></i>
+                      </button>
+                      <input type="number" id="item-amount" value="1" min="1" max="1000">
+                      <button class="quantity-btn" id="increase-amount">
+                        <i class="fas fa-plus"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <button id="give-item-btn" class="modern-btn success large" disabled>
+                    <i class="fas fa-gift"></i>
+                    <span>Dar Item</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Locations Tab -->
+        <div class="tab-content hidden" id="locations-content">
+          <div class="content-header">
+            <div class="page-title">
+              <div class="page-icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <div class="page-info">
+                <h2>Locais para Teleporte</h2>
+                <p>Teleporte-se rapidamente para locais importantes</p>
+              </div>
+            </div>
+            <div class="header-actions">
+              <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="location-search" placeholder="Pesquisar local...">
+              </div>
+            </div>
+          </div>
+          
+          <div class="locations-grid" id="location-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Notifications -->
+  <div id="notifications-container"></div>
+  
+  <!-- Loading Overlay -->
+  <div class="loading-overlay hidden" id="loading-overlay">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <span>Carregando...</span>
+    </div>
+  </div>
+  
+  <script src="script.js"></script>
+</body>
+</html>
